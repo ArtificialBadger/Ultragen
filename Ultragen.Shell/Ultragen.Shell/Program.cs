@@ -15,19 +15,31 @@ namespace Ultragen.Shell
             var chain = new MarkovChain<char>(3);
             //chain.
 
-            foreach (var name in await GetCityNames())
+            var names = await GetCityNames();
+
+            foreach (var name in names)
             {
                 chain.Add(name);
             }
 
-            //var uniqueNames = 100;
+            var uniqueNameCount = 50;
+            var generatedNames = new List<string>();
 
             // Randomly generate words that resemble the words in the dictionary.
             var rand = new Random();
-            for (int i = 0; i < 100; i++)
+            while (generatedNames.Count < uniqueNameCount)
             {
                 var word = new string(chain.Chain(rand).ToArray());
-                Console.WriteLine(word.Trim());
+
+                if (!names.Contains(word))
+                {
+                    generatedNames.Add(word.Trim());
+                }
+            }
+
+            foreach (var name in generatedNames)
+            {
+                Console.WriteLine(name);
             }
 
             Console.ReadLine();
