@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Ultragen.Shell
 {
-    public sealed class BritishCityNameGenerator : INameGenerator
+    public sealed class FileNameGenerator : INameGenerator
     {
+        public string FileLocation { get; set; }
 
         public async Task<IEnumerable<string>> GenerateNames()
         {
-            var filePath = System.IO.Path.GetFullPath(@"..\..\..\British Names.txt");
+            var filePath = System.IO.Path.GetFullPath(this.FileLocation);
             var file = new StreamReader(filePath);
 
             var rawNames = await file.ReadToEndAsync();
