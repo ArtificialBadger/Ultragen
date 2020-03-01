@@ -15,7 +15,8 @@ namespace Ultragen.Shell
             var chain = new MarkovChain<char>(3);
             //chain.
 
-            var names = await GetCityNames();
+            var generator = new BritishCityNameGenerator();
+            var names = await generator.GenerateNames();
 
             foreach (var name in names)
             {
@@ -43,22 +44,6 @@ namespace Ultragen.Shell
             }
 
             Console.ReadLine();
-        }
-
-        public static async Task<IEnumerable<string>> GetCityNames()
-        {
-
-            string filePath = System.IO.Path.GetFullPath(@"..\..\..\British Names.txt");
-            var file = new StreamReader(filePath);
-
-            var rawNames = await file.ReadToEndAsync();
-
-            return rawNames
-                .Split(Environment.NewLine)
-                .Select(n => n.Trim())
-                .Select(n => n.Replace("(", ""))
-                .Select(n => n.Replace(")", ""))
-                .Select(n => n.Contains(',') ? String.Join(' ', n.Split(',').Reverse()) : n);
         }
     }
 }
